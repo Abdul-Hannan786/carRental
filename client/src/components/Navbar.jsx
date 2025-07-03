@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { assets, menuLinks } from "../assets/assets";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import Modal from "./Modal";
 
-const Navbar = ({ setShowLogin }) => {
+const Navbar = () => {
   const location = useLocation();
   const [open, setopen] = useState(false);
   const navigate = useNavigate();
@@ -40,16 +41,15 @@ const Navbar = ({ setShowLogin }) => {
           <button onClick={() => navigate("/owner")} className="cursor-pointer">
             Dashboard
           </button>
-          <button
-            onClick={() => setShowLogin(true)}
-            className="font-semibold cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-lg"
-          >
-            Login
-          </button>
+          <Modal />
         </div>
       </div>
 
-      <button className="sm:hidden cursor-pointer" aria-label="Menu" onClick={() => setopen(!open)}>
+      <button
+        className="sm:hidden cursor-pointer"
+        aria-label="Menu"
+        onClick={() => setopen(!open)}
+      >
         <img src={open ? assets.close_icon : assets.menu_icon} alt="menu" />
       </button>
     </div>
