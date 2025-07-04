@@ -5,7 +5,7 @@ import Modal from "./Modal";
 
 const Navbar = () => {
   const location = useLocation();
-  const [open, setopen] = useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -48,7 +48,7 @@ const Navbar = () => {
       <button
         className="sm:hidden cursor-pointer"
         aria-label="Menu"
-        onClick={() => setopen(!open)}
+        onClick={() => setOpen(!open)}
       >
         <img src={open ? assets.close_icon : assets.menu_icon} alt="menu" />
       </button>
