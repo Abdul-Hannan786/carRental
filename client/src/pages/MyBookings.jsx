@@ -24,7 +24,7 @@ const MyBookings = () => {
         {bookings.map((booking, index) => (
           <div
             key={booking._id}
-            className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 border border-borderColor rounded-lg mt-5 first:mt-12"
+            className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg mt-5 first:mt-12 shadow-lg"
           >
             {/* Car Image + Info */}
             <div className="md:col-span-1">
