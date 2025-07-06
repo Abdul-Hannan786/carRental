@@ -8,6 +8,7 @@ const generateToken = (id) => {
   return jwt.sign(payload, process.env.AUTH_SECRET);
 };
 
+// Register User
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -31,6 +32,7 @@ export const registerUser = async (req, res) => {
   }
 };
 
+// Login User
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -46,6 +48,17 @@ export const loginUser = async (req, res) => {
 
     const token = generateToken(user._id.toString());
     res.json({ success: true, token, user });
+  } catch (error) {
+    console.log(error.message);
+    return res.json({ success: false, message: error.message });
+  }
+};
+
+// Get User Data
+export const getUserData = async (req, res) => {
+  try {
+    const { user } = req;
+    res.json({ success: true, user });
   } catch (error) {
     console.log(error.message);
     return res.json({ success: false, message: error.message });
