@@ -10,7 +10,7 @@ import {
 const SelectLoc = ({ placeholder, optionData, func }) => {
   return (
     <Select required onValueChange={(value) => func(value)} className="ml-20">
-      <SelectTrigger className="w-[135px]">
+      <SelectTrigger className="w-[163px]">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
