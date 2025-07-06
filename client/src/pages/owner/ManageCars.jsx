@@ -67,7 +67,9 @@ const ManageCars = () => {
                 <td className="flex items-center p-3">
                   <img
                     className="cursor-pointer"
-                    src={car.isAvailable ? assets.eye_close_icon : assets.eye_icon}
+                    src={
+                      car.isAvailable ? assets.eye_close_icon : assets.eye_icon
+                    }
                     alt="eye icon"
                   />
                   <img
