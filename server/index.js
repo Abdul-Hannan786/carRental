@@ -4,6 +4,7 @@ import dotenv from "dotenv/config";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/userRoutes.js";
 import ownerRouter from "./routes/ownerRoutes.js";
+import { authenticateUser } from "./middleware/auth.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,7 +14,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => res.send("Hello World!"));
 app.use("/api/user", userRouter);
-app.use("/api/owner", ownerRouter);
+app.use("/api/owner",authenticateUser, ownerRouter);
 
 connectDB()
   .then(() => {
