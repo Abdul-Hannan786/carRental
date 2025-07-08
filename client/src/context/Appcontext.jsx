@@ -8,7 +8,7 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
@@ -23,8 +23,9 @@ export const AppProvider = ({ children }) => {
       if (data.success) {
         setUser(data.user);
         setIsOwner(data.user.role === "owner");
+        console.log(data.user)
       } else {
-        naviagte("/");
+        navigate("/");
       }
     } catch (error) {
       toast.error(error.message);
@@ -63,10 +64,11 @@ export const AppProvider = ({ children }) => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
+    fetchUser()
   }, [token]);
 
   const value = {
-    naviagte,
+    navigate,
     axios,
     user,
     setUser,

@@ -12,7 +12,7 @@ import { LoaderCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
 const Modal = () => {
-  const { axios, navigate, setToken } = useAppContext();
+  const { axios, navigate, setToken, } = useAppContext();
   const [state, setState] = useState("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,6 +34,7 @@ const Modal = () => {
         setToken(data.token);
         localStorage.setItem("token", data.token);
         setOpen(false);
+        toast.success(data.message);
       } else {
         toast.error(data.message);
       }

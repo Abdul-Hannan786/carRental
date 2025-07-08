@@ -62,14 +62,14 @@ const Navbar = () => {
             {isOwner ? "Dashboard" : "List cars"}
           </button>
           {user ? (
-            <butto  n
+            <button
               onClick={logout}
-              className="cursor-pointer px-8 py-2 bg-primary-second hover:bg-primary-dull transition-all text-white rounded-lg"
+              className="cursor-pointer px-8 py-2 bg-primary-second hover:bg-primary-dull transition-all text-white rounded-lg font-semibold"
             >
               Logout
-            </butto>
+            </button>
           ) : (
-            <Modal className="cursor-pointer px-8 py-2 bg-primary-second hover:bg-primary-dull transition-all text-white rounded-lg" />
+            <Modal />
           )}
         </div>
       </div>

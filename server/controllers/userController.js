@@ -26,7 +26,7 @@ export const registerUser = async (req, res) => {
     const user = await User.create({ name, email, password: hashedPassword });
     const token = generateToken(user._id.toString());
 
-    res.json({ success: true, token, user });
+    res.json({ success: true, token, user, message: "Account created successfully" });
   } catch (error) {
     console.log(error.message);
     return res.json({ success: false, message: error.message });
@@ -48,7 +48,12 @@ export const loginUser = async (req, res) => {
     }
     delete user.password;
     const token = generateToken(user._id.toString());
-    res.json({ success: true, token, user });
+    res.json({
+      success: true,
+      token,
+      user,
+      message: "You're now logged in",
+    });
   } catch (error) {
     console.log(error.message);
     return res.json({ success: false, message: error.message });
