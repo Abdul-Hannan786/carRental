@@ -23,7 +23,6 @@ export const AppProvider = ({ children }) => {
       if (data.success) {
         setUser(data.user);
         setIsOwner(data.user.role === "owner");
-        console.log(data.user)
       } else {
         navigate("/");
       }
@@ -64,7 +63,7 @@ export const AppProvider = ({ children }) => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
-    fetchUser()
+    fetchUser();
   }, [token]);
 
   const value = {

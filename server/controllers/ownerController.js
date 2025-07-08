@@ -23,6 +23,10 @@ export const addCar = async (req, res) => {
     let car = JSON.parse(req.body.carData);
     const imageFile = req.file;
 
+    if (!req.file) {
+      return res.json({ success: false, message: "No image file provided." });
+    }
+
     // Upload image to ImageKit
     const fileBuffer = fs.readFileSync(imageFile.path);
     const response = await imageKit.upload({
@@ -172,7 +176,7 @@ export const updateUserImage = async (req, res) => {
     const image = imageURL;
     await User.findByIdAndUpdate(_id, { image });
 
-    res.json({ success: true, message: "Image updated" });
+    res.json({ success: true, message: "Image updated successfully" });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });

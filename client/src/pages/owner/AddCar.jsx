@@ -1,9 +1,15 @@
 import { assets } from "@/assets/assets";
 import Title from "@/components/owner/Title";
+import { useAppContext } from "@/context/Appcontext";
+import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const AddCar = () => {
+  const { axios } = useAppContext();
+
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [car, setCar] = useState({
     brand: "",
     model: "",
@@ -18,7 +24,40 @@ const AddCar = () => {
   });
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+      if (loading) return null;
+
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("carData", JSON.stringify(car));
+
+      const { data } = await axios.post("/api/owner/add-car", formData);
+      if (data.success) {
+        toast.success(data.message);
+        setImage(null);
+        setCar({
+          brand: "",
+          model: "",
+          year: 0,
+          pricePerDay: 0,
+          category: "",
+          transmission: "",
+          fuel_type: "",
+          seating_capacity: 0,
+          location: "",
+          description: "",
+        });
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error.message)
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -264,9 +303,24 @@ const AddCar = () => {
           ></textarea>
         </div>
 
-        <button className="flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary-second text-white rounded-md font-medium w-full justify-center cursor-pointer">
-          <img src={assets.tick_icon} alt="check icon" />
-          List Your Car
+        <button
+          disabled={loading}
+          className="flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary-second text-white rounded-md font-medium w-full justify-center cursor-pointer"
+        >
+          {loading ? (
+            <>
+              Listing
+              <LoaderCircle
+                className="w-5 h-5 animate-spin text-white"
+                strokeWidth={3}
+              />
+            </>
+          ) : (
+            <>
+              <img src={assets.tick_icon} alt="check icon" />
+              List Your Car
+            </>
+          )}
         </button>
       </form>
     </div>
