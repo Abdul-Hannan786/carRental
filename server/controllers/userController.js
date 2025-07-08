@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Car from "../models/Car.js";
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -36,7 +37,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).lean();
     if (!user) {
       return res.json({ success: false, message: "User not found" });
     }
@@ -45,7 +46,7 @@ export const loginUser = async (req, res) => {
     if (!isPassswordValid) {
       return res.json({ success: false, message: "Invalid credentials" });
     }
-
+    delete user.password;
     const token = generateToken(user._id.toString());
     res.json({ success: true, token, user });
   } catch (error) {
@@ -59,6 +60,17 @@ export const getUserData = async (req, res) => {
   try {
     const { user } = req;
     res.json({ success: true, user });
+  } catch (error) {
+    console.log(error.message);
+    return res.json({ success: false, message: error.message });
+  }
+};
+
+// Get all cars for the fronend
+export const getCars = async (req, res) => {
+  try {
+    const cars = await Car.find({ isAvailable: "true" });
+    res.json({ success: true, cars });
   } catch (error) {
     console.log(error.message);
     return res.json({ success: false, message: error.message });

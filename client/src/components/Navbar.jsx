@@ -2,11 +2,29 @@ import { assets, menuLinks } from "@/assets/assets";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
+import { useAppContext } from "@/context/Appcontext";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const { user, logout, isOwner, axios, setIsowner } = useAppContext();
+
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
+  const changeRole = async () => {
+    try {
+      const { data } = await axios.post("api/owner/change-role");
+      if (data.success) {
+        setIsowner(true);
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <div
@@ -37,10 +55,22 @@ const Navbar = () => {
           <img src={assets.search_icon} alt="" />
         </div>
         <div className="flex max-sm:flex-col items-start sm:items-center gap-6">
-          <button onClick={() => navigate("/owner")} className="cursor-pointer">
-            Dashboard
+          <button
+            onClick={() => (isOwner ? navigate("/owner") : changeRole())}
+            className="cursor-pointer"
+          >
+            {isOwner ? "Dashboard" : "List cars"}
           </button>
-          <Modal className="cursor-pointer px-8 py-2 bg-primary-second hover:bg-primary-dull transition-all text-white rounded-lg" />
+          {user ? (
+            <butto  n
+              onClick={logout}
+              className="cursor-pointer px-8 py-2 bg-primary-second hover:bg-primary-dull transition-all text-white rounded-lg"
+            >
+              Logout
+            </butto>
+          ) : (
+            <Modal className="cursor-pointer px-8 py-2 bg-primary-second hover:bg-primary-dull transition-all text-white rounded-lg" />
+          )}
         </div>
       </div>
 

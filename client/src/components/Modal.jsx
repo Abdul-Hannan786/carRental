@@ -6,21 +6,50 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useAppContext } from "@/context/Appcontext";
 import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
+import toast from "react-hot-toast";
 
 const Modal = () => {
-  const [state, setState] = useState("register");
+  const { axios, navigate, setToken } = useAppContext();
+  const [state, setState] = useState("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+      setLoading(true);
+      const { data } = await axios.post(`/api/user/${state}`, {
+        name,
+        email,
+        password,
+      });
+      if (data.success) {
+        navigate("/");
+        setToken(data.token);
+        localStorage.setItem("token", data.token);
+        setOpen(false);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Dialog>
-      <DialogTrigger className="font-semibold cursor-pointer px-8 py-2 bg-primary-second hover:bg-primary-dull transition-all text-white rounded-lg ">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger
+        onClick={() => setOpen(true)}
+        className="font-semibold cursor-pointer px-8 py-2 bg-primary-second hover:bg-primary-dull transition-all text-white rounded-lg "
+      >
         Login
       </DialogTrigger>
       <DialogContent>
@@ -117,10 +146,17 @@ const Modal = () => {
             )}
           </p>
           <button
+            disabled={loading}
             type="submit"
-            className="w-full bg-primary-second hover:bg-primary-dull text-white font-semibold py-2.5 rounded-md transition-all"
+            className="w-full flex items-center gap-2 justify-center bg-primary-second hover:bg-primary-dull text-white font-semibold py-2.5 rounded-md transition-all"
           >
             {state === "register" ? "Create Account" : "Login"}
+            {loading && (
+              <LoaderCircle
+                className="w-5 h-5 animate-spin text-white"
+                strokeWidth={3}
+              />
+            )}
           </button>
         </form>
       </DialogContent>
