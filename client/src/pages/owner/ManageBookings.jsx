@@ -2,6 +2,7 @@ import { dummyMyBookingsData } from "@/assets/assets";
 import Title from "@/components/owner/Title";
 import { useEffect, useState } from "react";
 
+
 const ManageBookings = () => {
   const [bookings, setBookings] = useState([]);
   const fetchOwnerBookings = async () => {

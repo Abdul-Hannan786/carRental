@@ -12,7 +12,7 @@ import { LoaderCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
 const Modal = () => {
-  const { axios, navigate, setToken, } = useAppContext();
+  const { axios, navigate, setToken } = useAppContext();
   const [state, setState] = useState("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -151,12 +151,19 @@ const Modal = () => {
             type="submit"
             className="w-full flex items-center gap-2 justify-center bg-primary-second hover:bg-primary-dull text-white font-semibold py-2.5 rounded-md transition-all"
           >
-            {state === "register" ? "Create Account" : "Login"}
-            {loading && (
-              <LoaderCircle
-                className="w-5 h-5 animate-spin text-white"
-                strokeWidth={3}
-              />
+            {/* {state === "register" ? "Create Account" : "Login"} */}
+            {loading ? (
+              <>
+                Loading
+                <LoaderCircle
+                  className="w-5 h-5 animate-spin text-white"
+                  strokeWidth={3}
+                />
+              </>
+            ) : state === "register" ? (
+              "Create Account"
+            ) : (
+              "Login"
             )}
           </button>
         </form>
