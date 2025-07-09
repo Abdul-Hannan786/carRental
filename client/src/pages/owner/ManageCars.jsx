@@ -1,4 +1,4 @@
-import { assets, dummyCarData } from "@/assets/assets";
+import { assets } from "@/assets/assets";
 import Title from "@/components/owner/Title";
 import { useAppContext } from "@/context/Appcontext";
 import { useEffect, useState } from "react";
@@ -8,6 +8,9 @@ import ConfirmModal from "@/components/ConfirmModal";
 const ManageCars = () => {
   const { isOwner, axios } = useAppContext();
   const [cars, setCars] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedCarId, setSelectedCarId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchOwnerCar = async () => {
     try {
@@ -34,6 +37,23 @@ const ManageCars = () => {
     } catch (error) {
       toast.error(error.message);
     }
+  };
+
+  const handleDeleteClick = (carId) => {
+    setSelectedCarId(carId);
+    setOpenModal(true);
+  };
+
+  const handleCancel = () => {
+    setOpenModal(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedCarId) return;
+    setLoading(true);
+    await deleteCar(selectedCarId);
+    setLoading(false);
+    setOpenModal(false);
   };
 
   const deleteCar = async (carId) => {
@@ -115,7 +135,7 @@ const ManageCars = () => {
                     alt="eye icon"
                   />
                   <img
-                    // onClick={() => deleteCar(car._id)}
+                    onClick={() => handleDeleteClick(car._id)}
                     className="cursor-pointer"
                     src={assets.delete_icon}
                     alt="delete icon"
@@ -126,6 +146,13 @@ const ManageCars = () => {
           </tbody>
         </table>
       </div>
+      <ConfirmModal
+        open={openModal}
+        onCancel={handleCancel}
+        onConfirm={handleDeleteConfirm}
+        message="Are you sure you want to delete this car?"
+        loading={loading}
+      />
     </div>
   );
 };

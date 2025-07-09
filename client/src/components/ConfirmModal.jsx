@@ -8,12 +8,14 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import { LoaderCircle } from "lucide-react";
 
 const ConfirmModal = ({
   open,
   onCancel,
   onConfirm,
   message = "Are you sure you want to delete this car?",
+  loading,
 }) => {
   return (
     <AlertDialog open={open} onOpenChange={onCancel}>
@@ -26,9 +28,20 @@ const ConfirmModal = ({
           <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
-            className="bg-red-600 hover:bg-red-700"
+            disabled={loading}
+            className="bg-destructive hover:bg-destructive/90"
           >
-            Delete
+            {loading ? (
+              <>
+                Deleting
+                <LoaderCircle
+                  className="w-5 h-5 animate-spin text-white"
+                  strokeWidth={3}
+                />
+              </>
+            ) : (
+              "Delete"
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

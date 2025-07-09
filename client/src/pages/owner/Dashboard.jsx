@@ -1,4 +1,4 @@
-import { assets, dummyDashboardData } from "@/assets/assets";
+import { assets } from "@/assets/assets";
 import Title from "@/components/owner/Title";
 import { useAppContext } from "@/context/Appcontext";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   const [data, setData] = useState({
     totalCars: 0,
-    totalBookings: 0,
+    totalbookings: 0,
     pendingBookings: 0,
     completedBookings: 0,
     recentBookings: [],
@@ -20,7 +20,7 @@ const Dashboard = () => {
     { title: "Total Cars", value: data.totalCars, icon: assets.carIconColored },
     {
       title: "Total Bookings",
-      value: data.totalBookings,
+      value: data.totalbookings,
       icon: assets.listIconColored,
     },
     {
