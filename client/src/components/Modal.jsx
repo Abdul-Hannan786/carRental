@@ -11,7 +11,7 @@ import { useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
-const Modal = () => {
+const Modal = ({onOpen}) => {
   const { axios, navigate, setToken } = useAppContext();
   const [state, setState] = useState("login");
   const [name, setName] = useState("");
@@ -48,8 +48,11 @@ const Modal = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        onClick={() => setOpen(true)}
-        className="font-semibold cursor-pointer px-8 py-2 bg-primary-second hover:bg-primary-dull transition-all text-white rounded-lg "
+        onClick={() => {
+          setOpen(true);
+          onOpen?.(); // This will close the navbar when Modal opens
+        }}
+        className="font-semibold cursor-pointer px-8 py-2 bg-primary-second hover:bg-primary-dull transition-all text-white rounded-lg"
       >
         Login
       </DialogTrigger>

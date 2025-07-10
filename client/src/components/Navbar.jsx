@@ -50,7 +50,7 @@ const Navbar = () => {
         } ${open ? "max-sm:translate-x-0" : "max-sm:translate-x-full"}`}
       >
         {menuLinks.map((link, index) => (
-          <Link key={index} to={link.path}>
+          <Link key={index} to={link.path} onClick={() => setOpen(false)}>
             {link.name}
           </Link>
         ))}
@@ -65,7 +65,10 @@ const Navbar = () => {
         </div>
         <div className="flex max-sm:flex-col items-start sm:items-center gap-6">
           <button
-            onClick={() => (isOwner ? navigate("/owner") : changeRole())}
+            onClick={() => {
+              setOpen(false); // Close navbar
+              isOwner ? navigate("/owner") : changeRole();
+            }}
             className="cursor-pointer"
           >
             {isOwner ? "Dashboard" : "List cars"}
@@ -78,7 +81,7 @@ const Navbar = () => {
               Logout
             </button>
           ) : (
-            <Modal />
+            <Modal onOpen={() => setOpen(false)} />
           )}
         </div>
       </div>
